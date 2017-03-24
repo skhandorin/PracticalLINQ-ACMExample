@@ -16,7 +16,7 @@ namespace ACM.BL.Test
             var customerList = repository.Retrieve();
 
             // Act
-            var result = repository.Find(customerList, 0);
+            var result = repository.Find(customerList, 2);
 
             // Assert
             Assert.IsNotNull(result);
@@ -37,6 +37,75 @@ namespace ACM.BL.Test
 
             // Assert
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void GetNamesTest()
+        {
+            // Arrange
+            CustomerRepository repository = new CustomerRepository();
+            var customerList = repository.Retrieve();
+
+            // Act
+            var query = repository.GetNames(customerList);
+
+            // Analyze
+            foreach (var item in query)
+            {
+                TestContext.WriteLine(item);
+            }
+
+            // Assert
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod]
+        public void GetNamesAndEmailTest()
+        {
+            // Arrange
+            CustomerRepository repository = new CustomerRepository();
+            var customerList = repository.Retrieve();
+
+            // Act
+            var query = repository.GetNamesAndEmail(customerList);
+
+            // NOT REALLY A TEST 
+        }
+
+        [TestMethod]
+        public void GetNamesAndTypeTest()
+        {
+            // Arrange
+            CustomerRepository repository = new CustomerRepository();
+            var customerList = repository.Retrieve();
+
+            CustomerTypeRepository typeRepository = new CustomerTypeRepository();
+            var customerTypeList = typeRepository.Retrieve();
+
+            // Act
+            var query = repository.GetNamesAndType(customerList, customerTypeList);
+
+            // NOT REALLY A TEST 
+        }
+
+        [TestMethod]
+        public void GetOverdueCustomersTest()
+        {
+            // Arrange
+            CustomerRepository repository = new CustomerRepository();
+            var customerList = repository.Retrieve();
+
+            // Act
+            var query = repository.GetOverdueCustomers(customerList);
+
+            // Analyze
+            foreach (var item in query)
+            {
+                TestContext.WriteLine(item.LastName + ", " + item.FirstName);
+            }
+
+            // Assert
+            Assert.IsNotNull(query);
         }
     }
 }
