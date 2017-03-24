@@ -108,5 +108,11 @@ namespace ACM.BL
         {
             return Enumerable.Repeat(new Customer(), 5);
         }
+
+        public IEnumerable<Customer> SortByName(IEnumerable<Customer> customerList)
+        {
+            return customerList.OrderBy(c => c.LastName)
+                                .ThenBy(c => c.FirstName);
+        }
     }
 }
