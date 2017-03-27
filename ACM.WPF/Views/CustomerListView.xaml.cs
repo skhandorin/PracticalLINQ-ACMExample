@@ -12,14 +12,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ACM.WPF
+namespace ACM.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CustomerListView.xaml
     /// </summary>
-    public partial class MainWindow : NavigationWindow
+    public partial class CustomerListView : Page
     {
-        public MainWindow()
+        public CustomerListView()
         {
             InitializeComponent();
         }
