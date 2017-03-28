@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACM.BL;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ACM.BL.Test
@@ -30,7 +31,7 @@ namespace ACM.BL.Test
             Assert.AreEqual(136, actual);
         }
 
-        
+
         [TestMethod]
         public void GetInvoiceTotalByIsPaidTest()
         {
@@ -51,6 +52,39 @@ namespace ACM.BL.Test
             var query = repository.GetInvoiceTotalByIsPaidAndMonth(invoiceList);
 
             // not really a test
+        }
+
+        [TestMethod()]
+        public void CalculateMeanTest()
+        {
+            InvoiceRepository repository = new InvoiceRepository();
+            var invoiceList = repository.Retrieve();
+
+            var actual = repository.CalculateMean(invoiceList);
+
+            Assert.AreEqual(6.875M, actual);
+        }
+
+        [TestMethod()]
+        public void CalculateMedianTest()
+        {
+            InvoiceRepository repository = new InvoiceRepository();
+            var invoiceList = repository.Retrieve();
+
+            var actual = repository.CalculateMedian(invoiceList);
+
+            Assert.AreEqual(10M, actual);
+        }
+
+        [TestMethod()]
+        public void CalculateModeTest()
+        {
+            InvoiceRepository repository = new InvoiceRepository();
+            var invoiceList = repository.Retrieve();
+
+            var actual = repository.CalculateMode(invoiceList);
+
+            Assert.AreEqual(10M, actual);
         }
     }
 }
