@@ -41,5 +41,16 @@ namespace ACM.BL.Test
 
             // not really a test
         }
+
+        [TestMethod]
+        public void GetInvoiceTotalByIsPaidAndMonthTest()
+        {
+            InvoiceRepository repository = new InvoiceRepository();
+            var invoiceList = repository.Retrieve();
+
+            var query = repository.GetInvoiceTotalByIsPaidAndMonth(invoiceList);
+
+            // not really a test
+        }
     }
 }

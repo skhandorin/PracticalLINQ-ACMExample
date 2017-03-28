@@ -143,5 +143,30 @@ namespace ACM.BL
 
             return query;
         }
+
+        public dynamic GetInvoiceTotalByIsPaidAndMonth(List<Invoice> invoiceList)
+        {
+            var query = invoiceList.GroupBy(inv => new
+                                {
+                                    IsPaid = inv.IsPaid ?? false,
+                                    InvoiceMonth = inv.InvoiceDate.ToString("MMMM"),
+                                    InvoiceMonthNumber = inv.InvoiceDate.Month
+                                },
+                                inv => inv.TotalAmount,
+                                (groupKey, invTotal) => new
+                                {
+                                    Key = groupKey,
+                                    InvoicedAmount = invTotal.Sum()
+                                })
+                            .OrderBy(x => x.Key.InvoiceMonthNumber)
+                            .ThenBy(x => x.Key.IsPaid);
+
+            foreach (var item in query)
+            {
+                Console.WriteLine(item.Key.IsPaid + "/" + item.Key.InvoiceMonth + " : " + item.InvoicedAmount);
+            }
+
+            return query;
+        }
     }
 }

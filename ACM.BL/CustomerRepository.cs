@@ -57,7 +57,6 @@ namespace ACM.BL
         }
 
         public IEnumerable<Customer> GetOverdueCustomers(List<Customer> customerList)
-        //public IEnumerable<Invoice> GetOverdueCustomers(List<Customer> customerList)
         {
             var query = customerList
                         .SelectMany(c => c.InvoiceList
@@ -92,7 +91,7 @@ namespace ACM.BL
                             FirstName="Samwise",
                             LastName = "Gamgee",
                             EmailAddress = "sg@hob.me",
-                            CustomerTypeId=1,
+                            CustomerTypeId=4,
                             InvoiceList = invoiceRepository.Retrieve(3)},
                     new Customer() 
                           { CustomerId = 4, 
@@ -113,6 +112,39 @@ namespace ACM.BL
         {
             return customerList.OrderBy(c => c.LastName)
                                 .ThenBy(c => c.FirstName);
+        }
+
+        public IEnumerable<KeyValuePair<string, decimal>> GetInvoiceTotalByCustomerType(List<Customer> customerList, List<CustomerType> customerTypeList)
+        {
+            var customerTypeQuery = customerList.GroupJoin(customerTypeList, 
+                                                      c => c.CustomerTypeId,
+                                                      ct => ct.CustomerTypeId,
+                                                      (c, ctRows) => new
+                                                      {
+                                                          Customer = c,
+                                                          CustomerTypeRows = ctRows.DefaultIfEmpty()
+                                                      })
+                                                .SelectMany( z => z.CustomerTypeRows.Select(ct => new
+                                                    {
+                                                        Customer = z.Customer,
+                                                        CustomerType = ct
+                                                    })
+                
+                                                );
+
+            var query = customerTypeQuery.GroupBy(c => c.CustomerType,
+                                             c => c.Customer.InvoiceList.Sum(inv => inv.TotalAmount),
+                                             (groupKey, invTotal) => new KeyValuePair<string, decimal>
+                                             (
+                                                 groupKey == null ? "_unspecified_" : groupKey.TypeName,
+                                                 invTotal.Sum()
+                                             ));
+
+            foreach (var item in query)
+            {
+                Console.WriteLine(item.Key + ": " + item.Value);
+            }
+            return query;
         }
     }
 }
